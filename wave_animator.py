@@ -3,13 +3,14 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 class wave_animator:
-	def __init__(self, solver, fig, ax, lw=2, color='b'):
+	def __init__(self, solver, fig, ax, lw = 2, color='b', steps_per_frame = 1):
 		self.solver = solver		
 		self.fig = fig
 		self.ax = ax
 		self.lines = []
 		self.lw = lw
 		self.color = color
+		self.steps_per_frame = steps_per_frame
 
 		for i in range(solver.nr):
 			lobj = self.ax.plot([],[],lw = self.lw,color = self.color)[0]
@@ -21,7 +22,8 @@ class wave_animator:
 		return self.lines
 
 	def animate(self,i):
-		self.solver.step()
+		for j in range(self.steps_per_frame):
+			self.solver.step()
 		for j, line in enumerate(self.lines):
 			line.set_data(self.solver.x, self.solver.w_cur[j,:])
 		return self.lines
@@ -46,7 +48,7 @@ if __name__ == '__main__':
 								dt = x[1] - x[0], 
 								dx = x[1] - x[0])
 
-	wa = wave_animator(solver, fig, ax)
+	wa = wave_animator(solver, fig, ax, steps_per_frame = 20)
 
 	anim = animation.FuncAnimation(wa.fig, wa.animate, init_func=wa.init,
 								   frames=2, interval=2, blit=True)

@@ -51,15 +51,17 @@ class wiggle_artist:
 			self.ax.plot(self.wiggles[i,:], c = self.line_color, lw = self.line_width)
 		return self.fig, self.ax
 
-	def init_wiggler(self, solver_class):
+	def init_wiggler(self, solver_class, steps_per_frame = 1):
 		self.x = np.linspace(0, self.n_block_cols, self.n_block_cols)
 		self.w0 = self.wiggles
 		self.v0 = np.zeros(self.w0.shape)
 		self.dt = self.x[1] - self.x[0]
 		self.dx = self.x[1] - self.x[0]
+		self.steps_per_frame = steps_per_frame
 
 		self.solver = solver_class(self.x, self.w0, self.v0, self.dt, self.dx)
-		self.waver = wave_animator(self.solver, self.fig, self.ax, self.line_width, self.line_color)
+		self.waver = wave_animator(self.solver, self.fig, self.ax, self.line_width, self.line_color,
+								   self.steps_per_frame)
 		
 
 if __name__ == '__main__':

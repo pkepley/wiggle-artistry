@@ -1,2 +1,6 @@
 # Ignore .pyc
 *.pyc
+
+# Ignore emacs temp files
+*~
+[#]*[#]

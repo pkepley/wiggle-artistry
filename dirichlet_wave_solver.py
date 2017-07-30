@@ -44,8 +44,7 @@ class dirichlet_wave_solver:
     def step(self):
         for i in range(self.nr):
              self.w_new[i,:] = ((2 * self.w_cur[i,:] - self.w_old[i,:]) -
-                               self.dtsq_over_dxsq * 
-                               self.K.dot(self.w_cur[i,:]).flatten())
+                               self.dtsq_over_dxsq * self.K.dot(self.w_cur[i,:]).flatten())
         self.w_new[:,0] = self.w_cur[:,0]
         self.w_new[:,self.nc-1] = self.w_cur[:,self.nc-1]
 

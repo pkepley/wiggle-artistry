@@ -30,11 +30,14 @@ class wave_animator:
 
 
 if __name__ == '__main__':
-    from dirichlet_wave_solver import dirichlet_wave_solver
+    from wave_solver import wave_solver
     nx = 1000
     nt = 1000
     x = np.linspace(0,2,1000)
     w0 = []
+
+    bc_type = 'Periodic'
+
     mm = 60
 
     fig = plt.figure()
@@ -44,9 +47,10 @@ if __name__ == '__main__':
         w0.append(np.array([np.exp(-(x-((i+1)*(1.0/mm)))**2 / .1**2)+(-2+ (3.0*i)/mm)]).flatten())
     w0 = np.array(w0)
 
-    solver = dirichlet_wave_solver(x,w0, np.zeros(w0.shape), 
-                                dt = x[1] - x[0], 
-                                dx = x[1] - x[0])
+    solver = wave_solver(x,w0, np.zeros(w0.shape), 
+						 dt = x[1] - x[0], 
+						 dx = x[1] - x[0],
+						 bc_type = bc_type)
 
     wa = wave_animator(solver, fig, ax, steps_per_frame = 20)
 

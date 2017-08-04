@@ -51,37 +51,45 @@ class wiggle_artist:
             self.ax.plot(self.wiggles[i,:], c = self.line_color, lw = self.line_width)
         return self.fig, self.ax
 
-    def init_wiggler(self, solver_class, steps_per_frame = 1):
+    def init_wiggler(self, solver_class, steps_per_frame = 1, bc_type='Dirichlet'):
         self.x = np.linspace(0, self.n_block_cols, self.n_block_cols)
         self.w0 = self.wiggles
         self.v0 = np.zeros(self.w0.shape)
         self.dt = self.x[1] - self.x[0]
         self.dx = self.x[1] - self.x[0]
         self.steps_per_frame = steps_per_frame
+        self.bc_type = bc_type
 
-        self.solver = solver_class(self.x, self.w0, self.v0, self.dt, self.dx)
-        self.waver = wave_animator(self.solver, self.fig, self.ax, self.line_width, self.line_color,
+        self.solver = solver_class(x = self.x, 
+                                   w0 = self.w0, 
+                                   v0 = self.v0, 
+                                   dt = self.dt, 
+                                   dx = self.dx, 
+                                   bc_type = self.bc_type)
+
+        self.waver = wave_animator(self.solver, self.fig, self.ax, 
+                                   self.line_width, self.line_color, 
                                    self.steps_per_frame)
         
 
 if __name__ == '__main__':
-    from dirichlet_wave_solver import dirichlet_wave_solver
+    from wave_solver import wave_solver
+
+    # # Plot Cage
+    image_file = './imgs/NickCage.jpg'
+    # wa = wiggle_artist(image_file, block_height = 4, line_color= (0,0,1,0.5), bg_color='w')
+    # wa.draw()
 
     # Plot Cage
-    image_file = './imgs/NickCage.jpg'
-    wa = wiggle_artist(image_file, block_height = 4, line_color= (0,0,1,0.5), bg_color='w')
-    wa.draw()
-
-    # Plot Cage
-    image_file = './imgs/NickCage.jpg'
-    wa = wiggle_artist(image_file, block_height = 4, line_color= (0,0,1,0.5), bg_color='w')
-    wa.draw()
+    # image_file = './imgs/NickCage.jpg'
+    # wa = wiggle_artist(image_file, block_height = 4, line_color= (0,0,1,0.5), bg_color='w')
+    # wa.draw()
 
     
-    # # Plot Lena
-    # image_file = './imgs/Lena.jpg'
-    # wa = wiggle_artist(image_file, block_height = 4, line_color= (0,0,1,0.5), bg_color='w')
-    # wa.init_wiggler(dirichlet_wave_solver)
-    # anim = animation.FuncAnimation(wa.fig, wa.waver.animate, init_func = wa.waver.init,
-    #                                frames=25, interval=0.1, blit=True)
+    # Plot Lena
+    #image_file = './imgs/Lena.jpg'
+    wa = wiggle_artist(image_file, block_height = 3, line_color= (0,0,1,0.5), bg_color='w')
+    wa.init_wiggler(wave_solver, bc_type='Periodic')
+    anim = animation.FuncAnimation(wa.fig, wa.waver.animate, init_func = wa.waver.init,
+                                   frames=25, interval=0.1, blit=True)
     plt.show()

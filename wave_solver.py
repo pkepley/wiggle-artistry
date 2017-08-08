@@ -33,7 +33,7 @@ class wave_solver:
         self.nc = nc
         self.bc_type = bc_type
 
-        # Taper bc in periodic BC case:
+        # Taper bc in periodic BC case to avoid discontinuities
         if self.bc_type == 'Periodic':
             self.taper_for_periodic()
         
@@ -55,7 +55,7 @@ class wave_solver:
             self.K[self.nc-1,self.nc-2] = -1
             self.K[self.nc-1,self.nc-1] = 2
             self.K[self.nc-1,0] = -1
-        # Don't bother with the values in the non-periodic case 
+        # Don't bother with the boundary values in the non-periodic case 
         else:
             self.K[0,0] = 1.0
             self.K[self.nc-1,self.nc-1] = 1.0
@@ -71,7 +71,7 @@ class wave_solver:
 
     def taper_for_periodic(self):
         # In the periodic case, taper the starting wave at 
-        # the end-points to avoid discontinuities
+        # the end-points to zero to avoid discontinuities
         tp = taper(self.x)
         for i in range(self.nr):
             m = np.mean(self.w0[i,:])
@@ -89,12 +89,16 @@ class wave_solver:
 
     def update_bcs(self):
         if self.bc_type == 'Dirichlet':
+            # Hold the boundary conditions fixed to the same value for all time
             self.w_new[:,0] = self.w_cur[:,0]
             self.w_new[:,self.nc-1] = self.w_cur[:,self.nc-1]
 
         elif self.bc_type == 'Neumann':
+            # Set the derivative to 0 at the boundary using 
+            #   f'(x) ~ (f(x+dx) - f(x))/dx 
             self.w_new[:,0] = self.w_new[:,1]
             self.w_new[:,self.nc-1] = self.w_new[:,self.nc-2]
 
         elif self.bc_type == 'Periodic':
+            # Periodic bc's are handled by the 2nd derivative operator
             pass

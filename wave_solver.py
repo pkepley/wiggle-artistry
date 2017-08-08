@@ -35,7 +35,7 @@ class wave_solver:
 
         # Taper bc in periodic BC case to avoid discontinuities
         if self.bc_type == 'Periodic':
-            self.taper_for_periodic()
+            self.apply_taper_to_ics()
         
         # Allocate space for waves, and use ic's
         self.w_new = np.zeros(self.w0.shape)
@@ -69,7 +69,7 @@ class wave_solver:
         # sparsify the matrix
         self.K = sparse.csr_matrix(self.K)
 
-    def taper_for_periodic(self):
+    def apply_taper_to_ics(self):
         # In the periodic case, taper the starting wave at 
         # the end-points to zero to avoid discontinuities
         tp = taper(self.x)

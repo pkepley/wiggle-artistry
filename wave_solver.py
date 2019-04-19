@@ -9,7 +9,7 @@ def taper(x):
     x0 = np.linspace(0,1,nx)
     y = np.cumsum(np.exp(-(x0-.05)**2/.0100**2) - np.exp(-(x0-.95)**2/.0100**2), 
                   axis=0)
-    y = y / y[nx/2]
+    y = y / y[int(nx/2)]
     
     return y
 

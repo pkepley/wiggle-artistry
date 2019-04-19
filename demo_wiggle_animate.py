@@ -13,7 +13,7 @@ wa.init_wiggler(wave_solver, steps_per_frame = 20, bc_type='Periodic')
 wa.fig.set_size_inches(8,8)
 wa.fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
 
-n_frames = 2 * (wa.n_block_cols / wa.waver.steps_per_frame) + 1
+n_frames = 2 * int(wa.n_block_cols / wa.waver.steps_per_frame) + 1
 
 anim = animation.FuncAnimation(wa.fig, wa.waver.animate, init_func = wa.waver.init,
                                frames = n_frames, interval = .1, blit = True)
@@ -32,7 +32,7 @@ wa.init_wiggler(wave_solver, steps_per_frame = 20)
 wa.fig.set_size_inches(8,8)
 wa.fig.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=None, hspace=None)
 
-n_frames = 2 * (wa.n_block_cols / wa.waver.steps_per_frame) + 1
+n_frames = 2 * int(wa.n_block_cols / wa.waver.steps_per_frame) + 1
 
 anim = animation.FuncAnimation(wa.fig, wa.waver.animate, init_func = wa.waver.init,
                                frames = n_frames, interval = .1, blit = True)

@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.ndimage import imread
+from imageio import imread
 from wave_animator import wave_animator
 from matplotlib import animation
 
@@ -18,7 +18,7 @@ def moving_average(a, n=3) :
 #####################################################################################
 class wiggle_artist:
     def __init__(self, image_file, block_height, bg_color = 'b', line_color = 'w'):
-        self.im = imread(image_file, flatten=True)        
+        self.im = imread(image_file, as_gray=True)
         self.nr, self.nc = self.im.shape
 
         self.block_height = block_height

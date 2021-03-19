@@ -4,13 +4,15 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 
-def taper(x):
+def taper(x, sigma = 0.01):
     # Very crude taper for the periodic bc case
     nx = len(x.flatten())
     x0 = np.linspace(0, 1, nx)
+    xc_left = sigma / 2
+    xc_right = 1 - (sigma / 2)
     y = np.cumsum(
-        np.exp(-((x0 - 0.05) ** 2) / 0.0100 ** 2)
-        - np.exp(-((x0 - 0.95) ** 2) / 0.0100 ** 2),
+        np.exp(-((x0 - xc_left) ** 2) / sigma ** 2)
+        - np.exp(-((x0 - xc_right) ** 2) / sigma ** 2),
         axis=0,
     )
     y = y / y[int(nx / 2)]

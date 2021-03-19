@@ -35,27 +35,21 @@ if __name__ == "__main__":
 
     nx = 1000
     nt = 1000
+    ny = 60
+
     x = np.linspace(0, 2, 1000)
-    w0 = []
+    y = np.arange(0, ny, dtype="float")
+    xx, yy = np.meshgrid(x, y)
 
-    bc_type = "Periodic"
-
-    mm = 60
+    w0 = np.zeros((ny, nx))
+    w0 = np.exp(-((xx - ((yy + 1) / ny)) ** 2) / 0.1 ** 2) + (-2 + (3 * yy) / ny)
 
     fig = plt.figure()
     ax = plt.axes(xlim=(x[0], x[-1]), ylim=(-3, 3))
+    ax.set_xticks([])
+    ax.set_yticks([])
 
-    for i in range(mm):
-        w0.append(
-            np.array(
-                [
-                    np.exp(-((x - ((i + 1) * (1.0 / mm))) ** 2) / 0.1 ** 2)
-                    + (-2 + (3.0 * i) / mm)
-                ]
-            ).flatten()
-        )
-    w0 = np.array(w0)
-
+    bc_type = "Dirichlet"
     solver = wave_solver(
         x, w0, np.zeros(w0.shape), dt=x[1] - x[0], dx=x[1] - x[0], bc_type=bc_type
     )

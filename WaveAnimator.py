@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 
-class wave_animator:
+class WaveAnimator:
     def __init__(self, solver, fig, ax, lw=2, color="b", steps_per_frame=1):
         self.solver = solver
         self.fig = fig
@@ -31,7 +31,7 @@ class wave_animator:
 
 
 if __name__ == "__main__":
-    from wave_solver import wave_solver
+    from WaveSolver import WaveSolver
 
     nx = 1000
     nt = 1000
@@ -50,11 +50,12 @@ if __name__ == "__main__":
     ax.set_yticks([])
 
     bc_type = "Dirichlet"
-    solver = wave_solver(
-        x, w0, np.zeros(w0.shape), dt=x[1] - x[0], dx=x[1] - x[0], bc_type=bc_type
+    solver = WaveSolver(
+        x, w0, np.zeros(w0.shape), dt=x[1] - x[0], dx=x[1] - x[0],
+        bc_type=bc_type
     )
 
-    wa = wave_animator(solver, fig, ax, steps_per_frame=20)
+    wa = WaveAnimator(solver, fig, ax, steps_per_frame=20)
 
     anim = animation.FuncAnimation(
         wa.fig, wa.animate, init_func=wa.init, frames=2, interval=2, blit=True

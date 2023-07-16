@@ -22,11 +22,13 @@ class WaveAnimator:
             line.set_data([], [])
         return self.lines
 
-    def animate(self, i):
+    def animate(self, i=None):
         for j in range(self.steps_per_frame):
             self.solver.step()
+
         for j, line in enumerate(self.lines):
             line.set_data(self.solver.x, self.solver.w_cur[j, :])
+
         return self.lines
 
 
